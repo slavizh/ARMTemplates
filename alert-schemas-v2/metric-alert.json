@@ -1,0 +1,468 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/9a222e58-a789-4e01-b5f3-b2d8ffcfdf21",
+            "alertRule": "MetricCpu",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/vmhealth/providers/microsoft.compute/virtualmachines/vm002"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_vmhealth_microsoft.insights_metricAlerts_MetricCpu_1595551806",
+            "firedDateTime": "2019-08-14T07:39:31.1039573Z",
+            "description": "test",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "MultipleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT1M",
+                "allOf": [
+                    {
+                        "metricName": "Percentage CPU",
+                        "metricNamespace": "Microsoft.Compute/virtualMachines",
+                        "operator": "GreaterThan",
+                        "threshold": "0",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "microsoft.resourceId",
+                                "value": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/vmhealth/providers/Microsoft.Compute/virtualMachines/vm002"
+                            },
+                            {
+                                "name": "microsoft.resourceType",
+                                "value": "Microsoft.Compute/virtualMachines"
+                            }
+                        ],
+                        "metricValue": 26.675
+                    }
+                ],
+                "windowStartTime": "2019-08-14T07:35:05.469Z",
+                "windowEndTime": "2019-08-14T07:36:05.469Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/7da1f7b9-569a-403c-8ebb-e0ab0cfa4f5a",
+            "alertRule": "disk rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/bkptest/providers/microsoft.compute/virtualmachines/vm001"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_Default-ActivityLogAlerts_microsoft.insights_metricAlerts_disk rule_725405988",
+            "firedDateTime": "2019-09-18T09:06:07.3020722Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "MultipleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "Data Disk Write Bytes/sec",
+                        "metricNamespace": "Microsoft.Compute/virtualMachines",
+                        "operator": "LessThan",
+                        "threshold": "1000000000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "microsoft.resourceId",
+                                "value": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/bkptest/providers/Microsoft.Compute/virtualMachines/vm001"
+                            },
+                            {
+                                "name": "microsoft.subscriptionId",
+                                "value": "7eda22b3-db97-4002-88ad-de682b1803ba"
+                            },
+                            {
+                                "name": "microsoft.resourceType",
+                                "value": "Microsoft.Compute/virtualMachines"
+                            }
+                        ],
+                        "metricValue": 0,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T08:57:38.615Z",
+                "windowEndTime": "2019-09-18T09:02:38.615Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/60c4c54b-74b6-4577-b31f-4ad330111978",
+            "alertRule": "disk alert",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/bkptest/providers/microsoft.compute/virtualmachines/vm003"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_Default-ActivityLogAlerts_microsoft.insights_metricAlerts_disk alert_54580367",
+            "firedDateTime": "2019-09-18T09:35:11.6990445Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "MultipleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "Data Disk Queue Depth",
+                        "metricNamespace": "Microsoft.Compute/virtualMachines",
+                        "operator": "LessThan",
+                        "threshold": "10000000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "microsoft.resourceId",
+                                "value": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/bkptest/providers/Microsoft.Compute/virtualMachines/vm003"
+                            },
+                            {
+                                "name": "microsoft.subscriptionId",
+                                "value": "7eda22b3-db97-4002-88ad-de682b1803ba"
+                            },
+                            {
+                                "name": "microsoft.resourceType",
+                                "value": "Microsoft.Compute/virtualMachines"
+                            }
+                        ],
+                        "metricValue": 0,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T09:26:46.025Z",
+                "windowEndTime": "2019-09-18T09:31:46.025Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/5cf88c83-22c2-42b0-8011-46abcd588d42",
+            "alertRule": "disk alert",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/vmhealth/providers/microsoft.compute/virtualmachines/vm002"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_Default-ActivityLogAlerts_microsoft.insights_metricAlerts_disk alert_2015782918",
+            "firedDateTime": "2019-09-18T09:57:09.299412Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "MultipleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "Data Disk Queue Depth",
+                        "metricNamespace": "Microsoft.Compute/virtualMachines",
+                        "operator": "LessThan",
+                        "threshold": "10000000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "microsoft.resourceId",
+                                "value": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/vmhealth/providers/Microsoft.Compute/virtualMachines/vm002"
+                            },
+                            {
+                                "name": "microsoft.subscriptionId",
+                                "value": "7eda22b3-db97-4002-88ad-de682b1803ba"
+                            },
+                            {
+                                "name": "microsoft.resourceType",
+                                "value": "Microsoft.Compute/virtualMachines"
+                            }
+                        ],
+                        "metricValue": 0,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T09:48:46.255Z",
+                "windowEndTime": "2019-09-18T09:53:46.255Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/06af38e4-fe65-4f88-9baf-85e12a2610a3",
+            "alertRule": "app rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/myresourcegroup/providers/microsoft.web/sites/demoapp11111"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_myResourceGroup_microsoft.insights_metricAlerts_app rule_-1704562871",
+            "firedDateTime": "2019-09-18T10:27:13.5252606Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "AverageResponseTime",
+                        "metricNamespace": "Microsoft.Web/sites",
+                        "operator": "LessThan",
+                        "threshold": "1E+15",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "demoapp11111.azurewebsites.net"
+                            },
+                            {
+                                "name": "ServerName",
+                                "value": "RD0003FF76085F"
+                            }
+                        ],
+                        "metricValue": 7.519,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T10:18:43.997Z",
+                "windowEndTime": "2019-09-18T10:23:43.997Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/06af38e4-fe65-4f88-9baf-85e12a2610a3",
+            "alertRule": "app rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Resolved",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/myresourcegroup/providers/microsoft.web/sites/demoapp11111"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_myResourceGroup_microsoft.insights_metricAlerts_app rule_-1704562871",
+            "firedDateTime": "2019-09-18T10:27:13.5252606Z",
+            "resolvedDateTime": "2019-09-18T10:34:15.9948983Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "AverageResponseTime",
+                        "metricNamespace": "Microsoft.Web/sites",
+                        "operator": "LessThan",
+                        "threshold": "1E+15",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "demoapp11111.azurewebsites.net"
+                            },
+                            {
+                                "name": "ServerName",
+                                "value": "RD0003FF76085F"
+                            }
+                        ],
+                        "metricValue": 0,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T10:25:44.061Z",
+                "windowEndTime": "2019-09-18T10:30:44.061Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/e789ab7f-96b7-4281-a1c8-588b075cfa2a",
+            "alertRule": "app rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/myresourcegroup/providers/microsoft.web/sites/demoapp11111"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_myResourceGroup_microsoft.insights_metricAlerts_app rule_1726151331",
+            "firedDateTime": "2019-09-18T10:45:20.7567046Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "AverageResponseTime",
+                        "metricNamespace": "Microsoft.Web/sites",
+                        "operator": "LessThan",
+                        "threshold": "1000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "demoapp11111.azurewebsites.net"
+                            }
+                        ],
+                        "metricValue": 5.4205,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T10:37:09.856Z",
+                "windowEndTime": "2019-09-18T10:42:09.856Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/f7e7effc-7c69-4d5d-b193-ea5e04b44b65",
+            "alertRule": "app rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Fired",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/myresourcegroup/providers/microsoft.web/sites/demoapp11111"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_myResourceGroup_microsoft.insights_metricAlerts_app rule_-1704562871",
+            "firedDateTime": "2019-09-18T11:03:32.1219792Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "AverageResponseTime",
+                        "metricNamespace": "Microsoft.Web/sites",
+                        "operator": "LessThan",
+                        "threshold": "1000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "demoapp11111.azurewebsites.net"
+                            },
+                            {
+                                "name": "ServerName",
+                                "value": "RD0003FF76085F"
+                            }
+                        ],
+                        "metricValue": 0.0591034482758621,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T10:55:09.868Z",
+                "windowEndTime": "2019-09-18T11:00:09.868Z"
+            }
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/f7e7effc-7c69-4d5d-b193-ea5e04b44b65",
+            "alertRule": "app rule",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Resolved",
+            "monitoringService": "Platform",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/myresourcegroup/providers/microsoft.web/sites/demoapp11111"
+            ],
+            "originAlertId": "7eda22b3-db97-4002-88ad-de682b1803ba_myResourceGroup_microsoft.insights_metricAlerts_app rule_-1704562871",
+            "firedDateTime": "2019-09-18T11:03:32.1219792Z",
+            "resolvedDateTime": "2019-09-18T11:10:33.4239679Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "properties": null,
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT5M",
+                "allOf": [
+                    {
+                        "metricName": "AverageResponseTime",
+                        "metricNamespace": "Microsoft.Web/sites",
+                        "operator": "LessThan",
+                        "threshold": "1000",
+                        "timeAggregation": "Average",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "demoapp11111.azurewebsites.net"
+                            },
+                            {
+                                "name": "ServerName",
+                                "value": "RD0003FF76085F"
+                            }
+                        ],
+                        "metricValue": 0,
+                        "webTestName": null
+                    }
+                ],
+                "windowStartTime": "2019-09-18T11:02:09.918Z",
+                "windowEndTime": "2019-09-18T11:07:09.918Z"
+            }
+        }
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "type": "object",
+    "properties": {
+        "schemaId": {
+            "type": "string"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "essentials": {
+                    "type": "object",
+                    "properties": {
+                        "alertId": {
+                            "type": "string"
+                        },
+                        "alertRule": {
+                            "type": "string"
+                        },
+                        "severity": {
+                            "type": "string"
+                        },
+                        "signalType": {
+                            "type": "string"
+                        },
+                        "monitorCondition": {
+                            "type": "string"
+                        },
+                        "monitoringService": {
+                            "type": "string"
+                        },
+                        "alertTargetIDs": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "originAlertId": {
+                            "type": "string"
+                        },
+                        "firedDateTime": {
+                            "type": "string"
+                        },
+                        "resolvedDateTime": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "essentialsVersion": {
+                            "type": "string"
+                        },
+                        "alertContextVersion": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "alertContext": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        }
+    }
+}

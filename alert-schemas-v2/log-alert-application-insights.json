@@ -1,0 +1,77 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/b9569717-bc32-442f-add5-83a997729330",
+            "alertRule": "WCUS-R2-Gen2",
+            "severity": "Sev3",
+            "signalType": "Metric",
+            "monitorCondition": "Resolved",
+            "monitoringService": "Application Insights",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/pipelinealertrg/providers/microsoft.compute/virtualmachines/wcus-r2-gen2"
+            ],
+            "originAlertId": "3f2d4487-b0fc-4125-8bd5-7ad17384221e_PipeLineAlertRG_microsoft.insights_metricAlerts_WCUS-R2-Gen2_-117781227",
+            "firedDateTime": "2019-03-22T13:58:24.3713213Z",
+            "resolvedDateTime": "2019-03-22T14:03:16.2246313Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "SearchQuery": "search *",
+            "SearchIntervalStartTimeUtc": "3/22/2019 1:36:33 PM",
+            "SearchIntervalEndtimeUtc": "3/22/2019 1:51:33 PM",
+            "ResultCount": 0,
+            "LinkToSearchResults": "https://portal.azure.com#@7eda22b3-db97-4002-88ad-de682b1803ba/blade/Microsoft_OperationsManagementSuite_Workspace/AnalyticsBlade/initiator/AnalyticsShareLinkToQuery/isQueryEditorVisible/true/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%7eda22b3-db97-4002-88ad-de682b1803ba%2FresourceGroups%2FPipeLineAlertRG%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FWEU-AIRunner%22%7D%5D%7D/query/search%20%2A/isQuerybase64Compressed/false/timespanInIsoFormat/2019-03-22T13%3a36%3a33.0000000Z%2f2019-03-22T13%3a51%3a33.0000000Z",
+            "SearchIntervalDurationMin": "15",
+            "SearchIntervalInMinutes": "15",
+            "Threshold": 10000,
+            "Operator": "Less Than",
+            "ApplicationId": "8e20151d-75b2-4d66-b965-153fb69d65a6",
+            "SearchResult": {
+                "tables": [
+                    {
+                        "name": "PrimaryResult",
+                        "columns": [
+                            {
+                                "name": "$table",
+                                "type": "string"
+                            },
+                            {
+                                "name": "Id",
+                                "type": "string"
+                            },
+                            {
+                                "name": "TimeGenerated",
+                                "type": "datetime"
+                            }
+                        ],
+                        "rows": [
+                            [
+                                "Fabrikam",
+                                "33446677a",
+                                "2018-02-02T15:03:12.18Z"
+                            ],
+                            [
+                                "Contoso",
+                                "33445566b",
+                                "2018-02-02T15:16:53.932Z"
+                            ]
+                        ]
+                    }
+                ],
+                "dataSources": [
+                    {
+                        "resourceId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/nrt-tip-kc/providers/microsoft.operationalinsights/workspaces/nrt-tip-kc",
+                        "tables": [
+                            "Heartbeat"
+                        ]
+                    }
+                ]
+            },
+            "IncludedSearchResults": "True",
+            "AlertType": "Number of results"
+        }
+    }
+}

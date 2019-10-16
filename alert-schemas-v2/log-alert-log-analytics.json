@@ -1,0 +1,80 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/6cfe43ab-c041-4cf7-8646-410f89faa542",
+            "alertRule": "DIsk Issue",
+            "severity": "Sev3",
+            "signalType": "Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Log Analytics",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/oms1/providers/microsoft.operationalinsights/workspaces/test-stan1"
+            ],
+            "originAlertId": "c06c0d5e-0f8d-474f-b38d-5a656e545618",
+            "firedDateTime": "2019-08-14T11:25:42.6239938Z",
+            "description": "test",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.1"
+        },
+        "alertContext": {
+            "SearchQuery": "Perf\n| where ObjectName == \"LogicalDisk\" \n| where CounterName == \"% Free Space\" \n| summarize AggregatedValue = avg(CounterValue) by _ResourceId, InstanceName, bin_at(TimeGenerated, 5m, datetime(2019-08-14T11:25:41.0000000)) ",
+            "SearchIntervalStartTimeUtc": "8/14/2019 11:20:41 AM",
+            "SearchIntervalEndtimeUtc": "8/14/2019 11:25:41 AM",
+            "ResultCount": 1,
+            "LinkToSearchResults": "https://portal.azure.com#@7eda22b3-db97-4002-88ad-de682b1803ba/blade/Microsoft_OperationsManagementSuite_Workspace/AnalyticsBlade/initiator/AnalyticsShareLinkToQuery/isQueryEditorVisible/true/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F7eda22b3-db97-4002-88ad-de682b1803ba%2FresourceGroups%2FOMS1%2Fproviders%2FMicrosoft.OperationalInsights%2Fworkspaces%2Ftest-stan1%22%7D%5D%7D/query/Perf%0A%7C%20where%20ObjectName%20%3D%3D%20%22LogicalDisk%22%20%0A%7C%20where%20CounterName%20%3D%3D%20%22%25%20Free%20Space%22%20%0A%7C%20summarize%20AggregatedValue%20%3D%20avg%28CounterValue%29%20by%20_ResourceId%2C%20InstanceName%2C%20bin_at%28TimeGenerated%2C%205m%2C%20datetime%282019-08-14T11%3A25%3A41.0000000%29%29%20/isQuerybase64Compressed/false/timespanInIsoFormat/2019-08-14T11%3a20%3a41.0000000Z%2f2019-08-14T11%3a25%3a41.0000000Z",
+            "SeverityDescription": "Error",
+            "WorkspaceId": "741fca1b-662a-40a4-b6ed-66f0815d4b17",
+            "SearchIntervalDurationMin": "5",
+            "AffectedConfigurationItems": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/vmhealth/providers/microsoft.compute/virtualmachines/vm002"
+            ],
+            "AlertType": "Metric measurement",
+            "SearchIntervalInMinutes": "5",
+            "SearchResults": {
+                "tables": [
+                    {
+                        "name": "PrimaryResult",
+                        "columns": [
+                            {
+                                "name": "_ResourceId",
+                                "type": "string"
+                            },
+                            {
+                                "name": "InstanceName",
+                                "type": "string"
+                            },
+                            {
+                                "name": "TimeGenerated",
+                                "type": "datetime"
+                            },
+                            {
+                                "name": "AggregatedValue",
+                                "type": "real"
+                            }
+                        ],
+                        "rows": [
+                            [
+                                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/vmhealth/providers/microsoft.compute/virtualmachines/vm002",
+                                "C:",
+                                "2019-08-14T11:20:41Z",
+                                89.9008102416992
+                            ]
+                        ]
+                    }
+                ],
+                "dataSources": [
+                    {
+                        "resourceId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/oms1/providers/microsoft.operationalinsights/workspaces/test-stan1",
+                        "tables": [
+                            "Perf"
+                        ]
+                    }
+                ]
+            },
+            "Threshold": 0,
+            "Operator": "Greater Than",
+            "IncludedSearchResults": "True"
+        }
+    }
+}

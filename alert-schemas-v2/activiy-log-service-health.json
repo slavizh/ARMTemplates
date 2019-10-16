@@ -1,0 +1,57 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/542c40ca-a316-86e2-fbfa-bd7e375c8056",
+            "alertRule": "Service Health",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "ServiceHealth",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba"
+            ],
+            "originAlertId": "b48f1804-f0c1-2dba-7a80-4274b64e6f31",
+            "firedDateTime": "2019-08-19T18:41:27.8587231",
+            "description": "Resolved: Azure Portal - Issues Loading Dashboard Tiles - RCA",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "authorization": null,
+            "channels": 1,
+            "claims": null,
+            "caller": null,
+            "correlationId": "6056e102-7a44-490f-8c33-5b032f67562a",
+            "eventSource": 2,
+            "eventTimestamp": "2019-08-19T18:38:56.8553874+00:00",
+            "httpRequest": null,
+            "eventDataId": "b48f1804-f0c1-2dba-7a80-4274b64e6f31",
+            "level": 4,
+            "operationName": "Microsoft.ServiceHealth/incident/action",
+            "operationId": "6056e102-7a44-490f-8c33-5b032f67562a",
+            "properties": {
+                "title": "Azure Portal - Issues Loading Dashboard Tiles - RCA",
+                "service": "Microsoft Azure portal",
+                "region": "Global",
+                "communication": "<p><strong>Summary of Impact:</strong> Between approximately 16:07 and 19:17 UTC on 09 Aug 2019, customers using the Azure portal may have received failure notifications under the following scenarios:</p><ul><li>Customers who had pinned tiles to their dashboards that provided them with a list of resources such as All Resources, All VMs, etc. would have either seen a \"No resources found\" message or just a grey tile. All other tiles on dashboards such as pinned resources continued to function as expected.</li><li>Access of the following two pages on the Azure Portal. a) \"My permissions\" page that enables customers to see what permissions they have in a given subscription and b) \"Resource Providers\" option in the resource menu for any given subscription that lets customers view, register and unregister Resource Providers in their subscriptions. Trying to open one of these two pages would have resulted in the page load timing out after 30 seconds.</li></ul><p><strong>Root Cause and Mitigation:&nbsp;</strong>The issue was caused by a code change that introduced a bug in an underlying API that the affected experiences relied on. The Azure Portal relies on feature flags to enable or disable features and the above regression would occur only when one such flag was set to the disabled state. While engineering had tests to cover these scenarios, those tests were only run with the flag set to enabled which was not the flag state we had in production.Portal engineering received alerts from our monitoring and alerting infrastructure. A roll back to the previous production build that did not contain this regression was initiated. This roll back was completed in multiple regions by 09 Aug 2019 19:09 UTC and affected experiences were back to working as expected at this point of time.</p><p><strong>Next Steps:&nbsp;</strong>We sincerely apologize for the impact to affected customers. We are continuously taking steps to improve the Microsoft Azure Platform and our processes to help ensure such incidents do not occur in the future. In this case, this includes (but is not limited to):</p><ul><li>The issue was fixed by enabling the feature flag and a hotfix deployment was completed by 08/10/19 by 17:00 UTC.</li><li>Added new tests that runs with all possible states of the particular feature flag that resulted in this incident to ensure that a similar regression is caught before changes get deployed to production.</li></ul>",
+                "incidentType": "Incident",
+                "trackingId": "LTJ7-JP0",
+                "impactStartTime": "2019-08-09T16:07:00Z",
+                "impactMitigationTime": "2019-08-09T19:17:00Z",
+                "impactedServices": "[{\"ImpactedRegions\":[{\"RegionName\":\"Global\"}],\"ServiceName\":\"Microsoft Azure portal\"}]",
+                "impactedServicesTableRows": "<tr>\r\n<td align='center' style='padding: 5px 10px; border-right:1px solid black; border-bottom:1px solid black'>Microsoft Azure portal</td>\r\n<td align='center' style='padding: 5px 10px; border-bottom:1px solid black'>Global<br></td>\r\n</tr>\r\n",
+                "defaultLanguageTitle": "Azure Portal - Issues Loading Dashboard Tiles - RCA",
+                "defaultLanguageContent": "<p><strong>Summary of Impact:</strong> Between approximately 16:07 and 19:17 UTC on 09 Aug 2019, customers using the Azure portal may have received failure notifications under the following scenarios:</p><ul><li>Customers who had pinned tiles to their dashboards that provided them with a list of resources such as All Resources, All VMs, etc. would have either seen a \"No resources found\" message or just a grey tile. All other tiles on dashboards such as pinned resources continued to function as expected.</li><li>Access of the following two pages on the Azure Portal. a) \"My permissions\" page that enables customers to see what permissions they have in a given subscription and b) \"Resource Providers\" option in the resource menu for any given subscription that lets customers view, register and unregister Resource Providers in their subscriptions. Trying to open one of these two pages would have resulted in the page load timing out after 30 seconds.</li></ul><p><strong>Root Cause and Mitigation:&nbsp;</strong>The issue was caused by a code change that introduced a bug in an underlying API that the affected experiences relied on. The Azure Portal relies on feature flags to enable or disable features and the above regression would occur only when one such flag was set to the disabled state. While engineering had tests to cover these scenarios, those tests were only run with the flag set to enabled which was not the flag state we had in production.Portal engineering received alerts from our monitoring and alerting infrastructure. A roll back to the previous production build that did not contain this regression was initiated. This roll back was completed in multiple regions by 09 Aug 2019 19:09 UTC and affected experiences were back to working as expected at this point of time.</p><p><strong>Next Steps:&nbsp;</strong>We sincerely apologize for the impact to affected customers. We are continuously taking steps to improve the Microsoft Azure Platform and our processes to help ensure such incidents do not occur in the future. In this case, this includes (but is not limited to):</p><ul><li>The issue was fixed by enabling the feature flag and a hotfix deployment was completed by 08/10/19 by 17:00 UTC.</li><li>Added new tests that runs with all possible states of the particular feature flag that resulted in this incident to ensure that a similar regression is caught before changes get deployed to production.</li></ul>",
+                "stage": "RCA",
+                "communicationId": "11000031052607",
+                "isHIR": "false",
+                "version": "0.1.1"
+            },
+            "status": "Resolved",
+            "subStatus": null,
+            "submissionTimestamp": "2019-08-19T18:41:27.8587231+00:00",
+            "ResourceType": null
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "schemaId": "Microsoft.Insights/activityLogs",
+    "data": {
+        "status": "Activated",
+        "context": {
+            "activityLog": {
+                "channels": "Operation",
+                "correlationId": "6ac88262-43be-4adf-a11c-bd2179852898",
+                "eventSource": "Administrative",
+                "eventTimestamp": "2017-03-29T15:43:08.0019532+00:00",
+                "eventDataId": "8195a56a-85de-4663-943e-1a2bf401ad94",
+                "level": "Informational",
+                "operationName": "Microsoft.Insights/actionGroups/write",
+                "operationId": "6ac88262-43be-4adf-a11c-bd2179852898",
+                "status": "Started",
+                "subStatus": "",
+                "subscriptionId": "7eda22b3-db97-4002-88ad-de682b1803ba",
+                "submissionTimestamp": "2017-03-29T15:43:20.3863637+00:00",
+                ...
+            }
+        },
+        "properties": {}
+    }
+}

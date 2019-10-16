@@ -1,0 +1,44 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/9e58cc86-1d67-4bbf-b345-7f2f860c01c2",
+            "alertRule": "Advisor Recommendations",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Recommendation",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/bkptest/providers/microsoft.compute/virtualmachines/vm001"
+            ],
+            "originAlertId": "c0851ce1-c294-43b6-9306-82d40b97ef06",
+            "firedDateTime": "2019-08-20T13:40:40.6607302Z",
+            "description": "A new recommendation is available.",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "channels": "Operation",
+            "claims": "{\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress\":\"Microsoft.Advisor\"}",
+            "caller": "Microsoft.Advisor",
+            "correlationId": "f585884d-56ad-4dee-906d-bd543c1b864a",
+            "eventSource": "Recommendation",
+            "eventTimestamp": "2019-08-20T13:27:29.0033742+00:00",
+            "httpRequest": "{\"clientIpAddress\":\"0.0.0.0\"}",
+            "eventDataId": "c0851ce1-c294-43b6-9306-82d40b97ef06",
+            "level": "Informational",
+            "operationName": "Microsoft.Advisor/recommendations/available/action",
+            "properties": {
+                "recommendationSchemaVersion": "1.0",
+                "recommendationCategory": "HighAvailability",
+                "recommendationImpact": "Medium",
+                "recommendationName": "Use availability sets for improved fault tolerance",
+                "recommendationResourceLink": "https://portal.azure.com/#blade/Microsoft_Azure_Expert/RecommendationListBlade/source/ActivityLog/recommendationTypeId/02c15f98-aedb-481b-884b-af5847b2bf3d/resourceId/%2Fsubscriptions%2F7eda22b3-db97-4002-88ad-de682b1803ba%2FresourceGroups%2Fbkptest%2Fproviders%2FMicrosoft.Compute%2FvirtualMachines%2Fvm001",
+                "recommendationType": "02c15f98-aedb-481b-884b-af5847b2bf3d"
+            },
+            "status": "Active",
+            "subStatus": "",
+            "submissionTimestamp": "2019-08-20T13:27:29.0033742+00:00"
+        }
+    }
+}

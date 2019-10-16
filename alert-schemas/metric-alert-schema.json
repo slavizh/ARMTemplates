@@ -1,0 +1,40 @@
+{
+    "schemaId": "AzureMonitorMetricAlert",
+    "data": {
+        "version": "2.0",
+        "status": "Activated",
+        "context": {
+            "timestamp": "2018-04-09T19:00:07.7461615Z",
+            "id": "…",
+            "name": "TEST-VM CPU Utilization",
+            "description": "",
+            "conditionType": "SingleResourceMultipleMetricCriteria",
+            "condition": {
+                "windowSize": "PT15M",
+                "allOf": [
+                    {
+                        "metricName": "Percentage CPU",
+                        "dimensions": [
+                            {
+                                "name": "ResourceId",
+                                "value": "d92fc5cb-06cf-4309-8c9a-538eea6a17a6"
+                            }
+                        ],
+                        "operator": "GreaterThan",
+                        "threshold": "5",
+                        "timeAggregation": "PT15M",
+                        "metricValue": 1.0
+                    }
+                ]
+            },
+            "subscriptionId": "…",
+            "resourceGroupName": "TEST",
+            "resourceName": "test-vm",
+            "resourceType": "Microsoft.Compute/virtualMachines",
+            "resourceId": "…",
+            "portalLink": "…"
+        },
+        "properties": {}
+    }
+}
+

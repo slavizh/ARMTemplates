@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of existing Linux Azure VM."
+      }
+    }
+  },
+  "variables": {
+    "vmExtensionsApiVersion": "2017-03-30"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),'/DependencyAgent')]",
+      "apiVersion": "[variables('vmExtensionsApiVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
+        "type": "DependencyAgentLinux",
+        "typeHandlerVersion": "9.1",
+        "autoUpgradeMinorVersion": true
+      }
+    }
+  ],
+    "outputs": {
+    }
+}

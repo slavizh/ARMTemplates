@@ -1,0 +1,23 @@
+{
+    "schemaId": "Microsoft.Insights/activityLogs",
+    "data": {
+        "status": "Activated",
+        "context": {
+            "activityLog": {
+                "authorization": {
+                    "action": "Microsoft.Insights/actionGroups/write",
+                    "scope": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/CONTOSO-TEST/providers/Microsoft.Insights/actionGroups/IncidentActions"
+                },
+                "claims": "{...}",
+                "caller": "me@contoso.com",
+                "description": "",
+                "httpRequest": "{...}",
+                "resourceId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/CONTOSO-TEST/providers/Microsoft.Insights/actionGroups/IncidentActions",
+                "resourceGroupName": "CONTOSO-TEST",
+                "resourceProviderName": "Microsoft.Insights",
+                "resourceType": "Microsoft.Insights/actionGroups"
+            }
+        },
+        "properties": {}
+    }
+}

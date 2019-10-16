@@ -1,0 +1,125 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/c3da1845-d88a-4c55-8f95-cb2688927f94",
+            "alertRule": "autoscale rule",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Autoscale",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/web007/providers/microsoft.web/serverfarms/asp-web007-b0a3"
+            ],
+            "originAlertId": "6f3051f6-7ae5-425c-b3df-403d26befb93",
+            "firedDateTime": "2019-09-13T06:40:23.8029717Z",
+            "description": "The autoscale engine attempting to scale resource '/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3' from 1 instances count to 2 instances count.",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "channels": "Admin, Operation",
+            "claims": "{\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/spn\":\"Microsoft.Insights/autoscaleSettings\"}",
+            "caller": "Microsoft.Insights/autoscaleSettings",
+            "correlationId": "70977c9f-941b-4513-ad6e-b1855867780e",
+            "eventSource": "Autoscale",
+            "eventTimestamp": "2019-09-13T06:40:23.4849126+00:00",
+            "eventDataId": "6f3051f6-7ae5-425c-b3df-403d26befb93",
+            "level": "Informational",
+            "operationName": "Microsoft.Insights/AutoscaleSettings/Scaleup/Action",
+            "operationId": "7b26824f-e08a-46a4-a576-07245ed959b3",
+            "properties": {
+                "description": "The autoscale engine attempting to scale resource '/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3' from 1 instances count to 2 instances count.",
+                "resourceName": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3",
+                "oldInstancesCount": "1",
+                "newInstancesCount": "2",
+                "activeAutoscaleProfile": "{\r\n  \"Name\": \"Scale web App007\",\r\n  \"Capacity\": {\r\n    \"Minimum\": \"1\",\r\n    \"Maximum\": \"2\",\r\n    \"Default\": \"1\"\r\n  },\r\n  \"Rules\": [\r\n    {\r\n      \"MetricTrigger\": {\r\n        \"Name\": \"CpuPercentage\",\r\n        \"Namespace\": \"microsoft.web/serverfarms\",\r\n        \"Resource\": \"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverFarms/ASP-web007-b0a3\",\r\n        \"ResourceLocation\": \"West Europe\",\r\n        \"TimeGrain\": \"PT1M\",\r\n        \"Statistic\": \"Average\",\r\n        \"TimeWindow\": \"PT10M\",\r\n        \"TimeAggregation\": \"Average\",\r\n        \"Operator\": \"LessThan\",\r\n        \"Threshold\": 70.0,\r\n        \"Source\": \"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverFarms/ASP-web007-b0a3\",\r\n        \"MetricType\": \"MDM\",\r\n        \"Dimensions\": [],\r\n        \"DividePerInstance\": false\r\n      },\r\n      \"ScaleAction\": {\r\n        \"Direction\": \"Increase\",\r\n        \"Type\": \"ChangeCount\",\r\n        \"Value\": \"1\",\r\n        \"Cooldown\": \"PT5M\"\r\n      }\r\n    }\r\n  ]\r\n}",
+                "lastScaleActionTime": "Fri, 13 Sep 2019 06:40:23 GMT"
+            },
+            "status": "Succeeded",
+            "submissionTimestamp": "2019-09-13T06:40:23.5173448+00:00"
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/31c78fef-a460-42f2-9cc2-f66db8883c3e",
+            "alertRule": "autoscale rule",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Autoscale",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/web007/providers/microsoft.insights/autoscalesettings/asp-web007-b0a3-autoscale-636"
+            ],
+            "originAlertId": "ff85a0d0-824d-4899-bd86-424ce5e87ec3",
+            "firedDateTime": "2019-09-13T06:40:23.8029717Z",
+            "description": "The autoscale engine attempting to scale resource '/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3' from 1 instances count to 2 instances count.",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "channels": "Admin, Operation",
+            "claims": "{\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/spn\":\"Microsoft.Insights/autoscaleSettings\"}",
+            "caller": "Microsoft.Insights/autoscaleSettings",
+            "correlationId": "70977c9f-941b-4513-ad6e-b1855867780e",
+            "eventSource": "Autoscale",
+            "eventTimestamp": "2019-09-13T06:40:23.4849126+00:00",
+            "eventDataId": "ff85a0d0-824d-4899-bd86-424ce5e87ec3",
+            "level": "Informational",
+            "operationName": "Microsoft.Insights/AutoscaleSettings/Scaleup/Action",
+            "operationId": "7b26824f-e08a-46a4-a576-07245ed959b3",
+            "properties": {
+                "description": "The autoscale engine attempting to scale resource '/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3' from 1 instances count to 2 instances count.",
+                "resourceName": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3",
+                "oldInstancesCount": "1",
+                "newInstancesCount": "2",
+                "activeAutoscaleProfile": "{\r\n  \"Name\": \"Scale web App007\",\r\n  \"Capacity\": {\r\n    \"Minimum\": \"1\",\r\n    \"Maximum\": \"2\",\r\n    \"Default\": \"1\"\r\n  },\r\n  \"Rules\": [\r\n    {\r\n      \"MetricTrigger\": {\r\n        \"Name\": \"CpuPercentage\",\r\n        \"Namespace\": \"microsoft.web/serverfarms\",\r\n        \"Resource\": \"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverFarms/ASP-web007-b0a3\",\r\n        \"ResourceLocation\": \"West Europe\",\r\n        \"TimeGrain\": \"PT1M\",\r\n        \"Statistic\": \"Average\",\r\n        \"TimeWindow\": \"PT10M\",\r\n        \"TimeAggregation\": \"Average\",\r\n        \"Operator\": \"LessThan\",\r\n        \"Threshold\": 70.0,\r\n        \"Source\": \"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverFarms/ASP-web007-b0a3\",\r\n        \"MetricType\": \"MDM\",\r\n        \"Dimensions\": [],\r\n        \"DividePerInstance\": false\r\n      },\r\n      \"ScaleAction\": {\r\n        \"Direction\": \"Increase\",\r\n        \"Type\": \"ChangeCount\",\r\n        \"Value\": \"1\",\r\n        \"Cooldown\": \"PT5M\"\r\n      }\r\n    }\r\n  ]\r\n}",
+                "lastScaleActionTime": "Fri, 13 Sep 2019 06:40:23 GMT"
+            },
+            "status": "Succeeded",
+            "submissionTimestamp": "2019-09-13T06:40:23.5173448+00:00"
+        }
+    }
+},
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/869547b3-0e45-44e1-ba98-3bed1216813f",
+            "alertRule": "autoscale rule",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Autoscale",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/web007/providers/microsoft.web/serverfarms/asp-web007-b0a3"
+            ],
+            "originAlertId": "cbe56414-cf37-47c8-a480-1e49e9637c5a",
+            "firedDateTime": "2019-09-13T06:40:24.3478257Z",
+            "description": "The autoscale operation to scale resource '/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/web007/providers/Microsoft.Web/serverfarms/ASP-web007-b0a3' from 1 instances count to 2 instances count completed successfully.",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "channels": "Admin, Operation",
+            "claims": "{\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/spn\":\"Microsoft.Insights/autoscaleSettings\"}",
+            "caller": "Microsoft.Insights/autoscaleSettings",
+            "correlationId": "70977c9f-941b-4513-ad6e-b1855867780e",
+            "eventSource": "Autoscale",
+            "eventTimestamp": "2019-09-13T06:40:24.1879548+00:00",
+            "eventDataId": "cbe56414-cf37-47c8-a480-1e49e9637c5a",
+            "level": "Informational",
+            "operationName": "Microsoft.Insights/AutoscaleSettings/ScaleupResult/Action",
+            "operationId": "14ee430f-01cc-4a26-806e-bd0e9d118f04",
+            "properties": {
+                "oldInstancesCount": "1",
+                "newInstancesCount": "2"
+            },
+            "status": "Succeeded",
+            "submissionTimestamp": "2019-09-13T06:40:24.1908114+00:00"
+        }
+    }
+}

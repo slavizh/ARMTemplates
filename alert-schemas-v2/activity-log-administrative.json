@@ -1,0 +1,45 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/7f30dcca-63b2-4fbb-8f12-786c464d13a6",
+            "alertRule": "Adm",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Administrative",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/default-activitylogalerts/providers/microsoft.insights/actiongroups/testwebhook"
+            ],
+            "originAlertId": "73d62dd6-79a6-427e-8546-1e9358e96ac5",
+            "firedDateTime": "2019-08-12T11:57:17.8328556Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "authorization": {
+                "action": "microsoft.insights/actionGroups/write",
+                "scope": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourceGroups/default-activitylogalerts/providers/microsoft.insights/actionGroups/TestWebhook"
+            },
+            "channels": "Operation",
+            "claims": "{\"aud\":\"https://management.core.windows.net/\",\"iss\":\"https://sts.windows.net/7eda22b3-db97-4002-88ad-de682b1803ba/\",\"iat\":\"1565610163\",\"nbf\":\"1565610163\",\"exp\":\"1565614063\",\"http://schemas.microsoft.com/claims/authnclassreference\":\"1\",\"aio\":\"AUQAu/8MAAAADko2mYgno4RtLKc3Fa3cTb9kJKzTqo2w1xn0kEEllCdQF0JCHSZZLcwnsjoDSo3NHz+BIvB7curQDbFFykDCBw==\",\"altsecid\":\"1:live.com:00018191A6E7E939\",\"http://schemas.microsoft.com/claims/authnmethodsreferences\":\"pwd\",\"appid\":\"c44b4083-3bb0-49c1-b47d-974e53cbdf3c\",\"appidacr\":\"2\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress\":\"stz@contoso.com\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname\":\"Zhelyazkov\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname\":\"Stanislav\",\"groups\":\"16240162-bb29-4741-8d0e-c5c6ed85cb02,a07fff93-735a-473a-8e7b-3f34cd4b086e,4dba39f6-2949-4707-8f19-5066c4dfad58,1d7e562d-65b7-415f-b22f-cb92409433a1\",\"http://schemas.microsoft.com/identity/claims/identityprovider\":\"live.com\",\"ipaddr\":\"37.157.173.32\",\"name\":\"Stanislav Zhelyazkov\",\"http://schemas.microsoft.com/identity/claims/objectidentifier\":\"7d484d2d-c809-4896-ba1e-eb0fbafab022\",\"puid\":\"1003000086527A20\",\"http://schemas.microsoft.com/identity/claims/scope\":\"user_impersonation\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier\":\"-qNM1GoKK_EWNyypd1CGUFRBsZAPvckX6GojdWZFFC8\",\"http://schemas.microsoft.com/identity/claims/tenantid\":\"7eda22b3-db97-4002-88ad-de682b1803ba\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name\":\"live.com#stz@contoso.com\",\"uti\":\"V6Snqp3Y9EePsCzL9Zg2AA\",\"ver\":\"1.0\",\"wids\":\"e8611ab8-c189-46e8-94e1-60213ab1f814,62e90394-69f5-4237-9190-012177145e10,194ae4cb-b126-40b2-bd5b-6091b380977d\"}",
+            "caller": "stz@contoso.com",
+            "correlationId": "7a21db21-96b5-4cfc-94f0-660950a7f599",
+            "eventSource": "Administrative",
+            "eventTimestamp": "2019-08-12T11:55:38.4597829+00:00",
+            "httpRequest": "{\"clientRequestId\":\"171f39c4-67e3-464d-a84a-f2e9e205a016\",\"clientIpAddress\":\"99.152.178.36\",\"method\":\"PUT\"}",
+            "eventDataId": "73d62dd6-79a6-427e-8546-1e9358e96ac5",
+            "level": "Informational",
+            "operationName": "microsoft.insights/actionGroups/write",
+            "operationId": "7a21db21-96b5-4cfc-94f0-660950a7f599",
+            "properties": {
+                "statusCode": "OK",
+                "serviceRequestId": "498dbccc-ba31-49ab-9a25-e3b81106d716"
+            },
+            "status": "Succeeded",
+            "subStatus": "OK",
+            "submissionTimestamp": "2019-08-12T11:57:10.1388065+00:00"
+        }
+    }
+}

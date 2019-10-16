@@ -1,0 +1,34 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/4df4e8c8-1529-4be4-ab2f-bfdc0cdf3995",
+            "alertRule": "DNS Client Service Health",
+            "severity": "Sev1",
+            "signalType": "Unknown",
+            "monitorCondition": "Fired",
+            "monitoringService": "Infrastructure Insights",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/vm001/providers/microsoft.compute/virtualmachines/vm001"
+            ],
+            "originAlertId": "66946168-8dcc-4e39-a6f9-0b814575e807",
+            "firedDateTime": "2019-04-04T12:02:33.6565805Z",
+            "description": "The DNS client service on server {0} has stopped running",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "FirstSection": {
+                "SignalName": "Health Criteria: DNS Client Service Health",
+                "Criteria": "DNS Client Service Health : Critical",
+                "ComponentType": "Computer",
+                "ComponentName": "VM001",
+                "Properties": {
+                    "Computer": "VM001"
+                },
+                "WorkloadType": "BaseOS",
+                "ArticleLink": "https://aka.ms/X383qq"
+            }
+        }
+    }
+}

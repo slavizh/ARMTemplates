@@ -1,0 +1,46 @@
+{
+    "schemaId": "azureMonitorCommonAlertSchema",
+    "data": {
+        "essentials": {
+            "alertId": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.AlertsManagement/alerts/a6b316e6-005c-4c8e-9c5d-c9bc29f847d1",
+            "alertRule": "Policy alert",
+            "severity": "Sev4",
+            "signalType": "Activity Log",
+            "monitorCondition": "Fired",
+            "monitoringService": "Activity Log - Policy",
+            "alertTargetIDs": [
+                "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/testvm/providers/microsoft.compute/virtualmachines/vm0001"
+            ],
+            "originAlertId": "0ec4fe84-093b-4e34-a432-e450d95cc1a0",
+            "firedDateTime": "2019-07-25T12:01:52.3488441Z",
+            "description": "",
+            "essentialsVersion": "1.0",
+            "alertContextVersion": "1.0"
+        },
+        "alertContext": {
+            "authorization": {
+                "action": "Microsoft.Compute/virtualMachines/write",
+                "scope": "/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/resourcegroups/testvm/providers/Microsoft.Compute/virtualMachines/vm0001"
+            },
+            "channels": "Operation",
+            "claims": "{\"aud\":\"https://management.core.windows.net/\",\"iss\":\"https://sts.windows.net/7eda22b3-db97-4002-88ad-de682b1803ba/\",\"iat\":\"1564054083\",\"nbf\":\"1564054083\",\"exp\":\"1564057983\",\"http://schemas.microsoft.com/claims/authnclassreference\":\"1\",\"aio\":\"AUQAu/8MAAAA+lUiLaeo4FmEEnV4ojJ/pHdDLA7rN6dgcjG8l/cdbh73gkEv76uQuZE8XhaYCyt8aAnufr0iO2ViQzJePaIf+g==\",\"altsecid\":\"1:live.com:00018191A6E7E939\",\"http://schemas.microsoft.com/claims/authnmethodsreferences\":\"pwd\",\"appid\":\"c44b4083-3bb0-49c1-b47d-974e53cbdf3c\",\"appidacr\":\"2\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress\":\"stz@contoso.com\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname\":\"Zhelyazkov\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname\":\"Stanislav\",\"groups\":\"16240162-bb29-4741-8d0e-c5c6ed85cb02,a07fff93-735a-473a-8e7b-3f34cd4b086e,4dba39f6-2949-4707-8f19-5066c4dfad58,1d7e562d-65b7-415f-b22f-cb92409433a1\",\"http://schemas.microsoft.com/identity/claims/identityprovider\":\"live.com\",\"ipaddr\":\"37.157.173.32\",\"name\":\"Stanislav Zhelyazkov\",\"http://schemas.microsoft.com/identity/claims/objectidentifier\":\"7d484d2d-c809-4896-ba1e-eb0fbafab022\",\"puid\":\"1003000086527A20\",\"http://schemas.microsoft.com/identity/claims/scope\":\"user_impersonation\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier\":\"-qNM1GoKK_EWNyypd1CGUFRBsZAPvckX6GojdWZFFC8\",\"http://schemas.microsoft.com/identity/claims/tenantid\":\"7eda22b3-db97-4002-88ad-de682b1803ba\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name\":\"live.com#stz@contoso.com\",\"uti\":\"n5RSizRJrEmJaJqYt5UwAA\",\"ver\":\"1.0\",\"wids\":\"e8611ab8-c189-46e8-94e1-60213ab1f814,62e90394-69f5-4237-9190-012177145e10,194ae4cb-b126-40b2-bd5b-6091b380977d\"}",
+            "caller": "stz@contoso.com",
+            "correlationId": "aafa9081-42a0-4447-b247-033c791ba79e",
+            "eventSource": "Policy",
+            "eventTimestamp": "2019-07-25T12:00:44.5092247+00:00",
+            "eventDataId": "0ec4fe84-093b-4e34-a432-e450d95cc1a0",
+            "level": "Informational",
+            "operationName": "Microsoft.Authorization/policies/auditIfNotExists/action",
+            "operationId": "cc7de03e-b3b5-4ac0-af5c-3d0902990abc",
+            "properties": {
+                "isComplianceCheck": "False",
+                "resourceLocation": "centralus",
+                "ancestors": "7eda22b3-db97-4002-88ad-de682b1803ba",
+                "policies": "[{\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/bd352bd5-2853-4985-bf0d-73806b4a5744/\",\"policySetDefinitionId\":\"/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8/\",\"policyDefinitionReferenceId\":\"disableIPForwardingMonitoring\",\"policySetDefinitionName\":\"1f3afdf9-d0c9-4c3d-847f-89da613e70a8\",\"policyDefinitionName\":\"bd352bd5-2853-4985-bf0d-73806b4a5744\",\"policyDefinitionEffect\":\"AuditIfNotExists\",\"policyAssignmentId\":\"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn/\",\"policyAssignmentName\":\"SecurityCenterBuiltIn\",\"policyAssignmentScope\":\"/subscriptions/7eda22b3-db97-4002-88ad-de682b1803ba\",\"policyAssignmentParameters\":{\"systemUpdatesMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"systemConfigurationsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"endpointProtectionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diskEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"networkSecurityGroupsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"webApplicationFirewallMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"nextGenerationFirewallMonitoringEffect\":{\"value\":\"Disabled\"},\"vulnerabilityAssesmentMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"storageEncryptionMonitoringEffect\":{\"value\":\"Audit\"},\"jitNetworkAccessMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"adaptiveApplicationControlsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlAuditingMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"}}}]"
+            },
+            "status": "Succeeded",
+            "subStatus": "",
+            "submissionTimestamp": "2019-07-25T12:01:45.1278838+00:00"
+        }
+    }
+}
