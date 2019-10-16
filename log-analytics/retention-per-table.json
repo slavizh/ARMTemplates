@@ -1,0 +1,40 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the log analytics workspace"
+            }
+        },
+        "tableName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the table in log analytics to set custom retention. Tables names are case sensitive."
+            }
+        },
+        "tableRetention": {
+            "type": "int",
+            "metadata": {
+                "description": "The custom retention period for the table."
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "tables": "2017-04-26-preview"
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('logAnalyticsWorkspaceName'), '/', parameters('tableName'))]",
+            "type": "Microsoft.OperationalInsights/workspaces/tables",
+            "apiVersion": "[variables('apiVersions').tables]",
+            "properties": {
+                "retentionInDays": "[parameters('tableRetention')]"
+            }
+        }
+    ],
+    "outputs": {}
+}
