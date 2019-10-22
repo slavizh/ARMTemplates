@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGroupResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource Id of action group."
+            }
+        },
+        "tagName": {
+            "type": "string",
+            "defaultValue": "createdby",
+            "metadata": {
+                "description": "the name of the tag"
+            }
+        },
+        "tagValue": {
+            "type": "string",
+            "defaultValue": "devtestlabs",
+            "metadata": {
+                "description": "the value of the tag"
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "budgets": "2019-10-01"
+        }
+    },
+    "resources": [
+        {
+            "name": "Budget1",
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "[variables('apiVersions').budgets]",
+            "properties": {
+                "category": "Cost",
+                "amount": 79,
+                "timeGrain": "BillingMonth",
+                "timePeriod": {
+                    "startDate": "2019-10-01",
+                    "endDate": "2029-10-01"
+                },
+                "notifications": {
+                    "Actual_GreaterThan_75_Percent": {
+                        "enabled": true,
+                        "operator": "GreaterThan",
+                        "threshold": 75,
+                        "contactEmails": [],
+                        "contactRoles": [],
+                        "contactGroups": [
+                            "[parameters('actionGroupResourceId')]"
+                        ],
+                        "thresholdType": "Actual"
+                    },
+                    "Actual_GreaterThan_95_Percent": {
+                        "enabled": true,
+                        "operator": "GreaterThan",
+                        "threshold": 95,
+                        "contactEmails": [],
+                        "contactRoles": [],
+                        "contactGroups": [
+                            "[parameters('actionGroupResourceId')]"
+                        ],
+                        "thresholdType": "Actual"
+                    }
+                },
+                "filter": {
+                    "tags": {
+                        "name": "[parameters('tagName')]",
+                        "operator": "In",
+                        "values": [
+                            "[parameters('tagValue')]"
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
