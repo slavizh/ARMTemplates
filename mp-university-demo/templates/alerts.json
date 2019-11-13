@@ -1,0 +1,503 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alerts": {
+            "type": "object"
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "activityLogAlerts": "2017-04-01",
+            "metricAlerts": "2018-03-01",
+            "scheduledQueryRules": "2018-04-16"
+        }
+    },
+    "resources": [
+        {
+            "name": "Resource Group was created",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Administrative log alert sample.",
+                "scopes": [
+                    "[subscription().id]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Administrative"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Resources/subscriptions/resourceGroups/write"
+                        },
+                        {
+                            "field": "status",
+                            "equals": "Succeeded"
+                        },
+                        {
+                            "field": "properties.statusCode",
+                            "equals": "Created"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').resourceGroupCreate.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Security Alert",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Security log alert sample.",
+                "scopes": [
+                    "[subscription().id]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Security"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').securityAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Service Health Alert",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Service Health alert sample.",
+                "scopes": [
+                    "[subscription().id]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "ServiceHealth"
+                        },
+                        {
+                            "field": "properties.stage",
+                            "equals": "Active"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.incidentType",
+                                    "equals": "Incident"
+                                },
+                                {
+                                    "field": "properties.incidentType",
+                                    "equals": "Maintenance"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').serviceHealthAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Advisor Recommendation Alert",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Advisor log alert sample.",
+                "scopes": [
+                    "[subscription().id]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Recommendation"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Advisor/recommendations/available/action"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.recommendationCategory",
+                                    "equals": "Cost"
+                                },
+                                {
+                                    "field": "properties.recommendationCategory",
+                                    "equals": "HighAvailability"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').advisorAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Policy Alert",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Policy log alert sample.",
+                "scopes": [
+                    "[subscription().id]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Policy"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Authorization/policies/audit/action"
+                        },
+                        {
+                            "field": "properties.isComplianceCheck",
+                            "equals": "False"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').policyAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Autoscale Alert",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Autoscale log alert sample.",
+                "scopes": [
+                    "[parameters('alerts').autoscaleAlert.resourceGroupId]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Autoscale"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Insights/AutoscaleSettings/Scaleup/Action"
+                        },
+                        {
+                            "field": "status",
+                            "equals": "Succeeded"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').autoscaleAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Resource Health on VMs",
+            "type": "Microsoft.Insights/activityLogAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).activityLogAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "Global",
+            "properties": {
+                "enabled": true,
+                "description": "Resource Health log alert sample.",
+                "scopes": [
+                    "[parameters('alerts').resourceHealthAlert.resourceGroupId]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "ResourceHealth"
+                        },
+                        {
+                            "field": "status",
+                            "equals": "Active"
+                        },
+                        {
+                            "field": "resourceType",
+                            "equals": "MICROSOFT.COMPUTE/VIRTUALMACHINES"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.currentHealthStatus",
+                                    "equals": "Unavailable"
+                                },
+                                {
+                                    "field": "properties.currentHealthStatus",
+                                    "equals": "Degraded"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('alerts').resourceHealthAlert.actionGroupId]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Metric Alert Sample Rule",
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).metricAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "global",
+            "properties": {
+                "description": "Metric Alert Sample description",
+                "enabled": true,
+                "severity": 1,
+                "windowSize": "PT5M",
+                "evaluationFrequency": "PT5M",
+                "scopes": [
+                    "[parameters('alerts').staticMetricAlert.webAppResourceId]"
+                ],
+                "criteria": {
+                    "allOf": [
+                        {
+                            "metricName": "AverageResponseTime",
+                            "metricNamespace": "Microsoft.Web/sites",
+                            "operator": "LessThan",
+                            "timeAggregation": "Average",
+                            "name": "Metric1",
+                            "dimensions": [
+                                {
+                                    "name": "Instance",
+                                    "operator": "Include",
+                                    "values": [
+                                        "*"
+                                    ]
+                                }
+                            ],
+                            "monitorTemplateType": 8,
+                            "criterionType": "StaticThresholdCriterion",
+                            "threshold": 1000
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('alerts').staticMetricAlert.actionGroupId]",
+                        "webhookProperties": {
+                        }
+                    }
+                ],
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.Web/sites"
+            }
+        },
+        {
+            "name": "Dynamic Metric Alert Sample Rule",
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "[variables( 'apiVersions' ).metricAlerts]",
+            "tags": "[parameters('tags')]",
+            "location": "global",
+            "properties": {
+                "description": "Dynamic Metric Alert Sample description",
+                "enabled": true,
+                "severity": 1,
+                "windowSize": "PT5M",
+                "evaluationFrequency": "PT5M",
+                "templateType": 13,
+                "templateSpecificParameters": {
+                    "direction": "Up",
+                    "sensitivity": "Medium"
+                },
+                "scopes": [
+                    "[parameters('alerts').dynamicMetricAlert.webAppResourceId]"
+                ],
+                "criteria": {
+                    "allOf": [
+                        {
+                            "metricName": "AverageResponseTime",
+                            "metricNamespace": "Microsoft.Web/sites",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "name": "Metric1",
+                            "alertSensitivity": "Medium",
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 4,
+                                "minFailingPeriodsToAlert": 4
+                            },
+                            "ignoreDataBefore": "2019-09-03T21:00:00.000Z",
+                            "dimensions": [
+                                {
+                                    "name": "Instance",
+                                    "operator": "Include",
+                                    "values": [
+                                        "*"
+                                    ]
+                                }
+                            ],
+                            "monitorTemplateType": 13,
+                            "criterionType": "DynamicThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('alerts').dynamicMetricAlert.actionGroupId]",
+                        "webhookProperties": {
+                        }
+                    }
+                ],
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.Web/sites",
+                "targetResourceRegion": "[parameters('alerts').dynamicMetricAlert.region]"
+            }
+        },
+        {
+            "name": "Low Disk space on a volume",
+            "type": "Microsoft.Insights/scheduledQueryRules",
+            "apiVersion": "[variables( 'apiVersions' ).scheduledQueryRules]",
+            "tags": "[parameters('tags')]",
+            "location": "[toLower(replace(parameters('alerts').logAlertLowDiskSpace.logAnalyticsRegion, ' ', ''))]",
+            "properties": {
+                "description": "The volume on a computer is below 10%.",
+                "enabled": "true",
+                "source": {
+                    "authorizedResources": [
+                    ],
+                    "query": "Perf | where ObjectName =~ 'LogicalDisk' and CounterName =~ '% Free Space' and InstanceName !~ '_Total' | summarize AggregatedValue = avg(CounterValue) by _ResourceId, VolumeName = InstanceName, bin(TimeGenerated, 5m)",
+                    "dataSourceId": "[parameters('alerts').logAlertLowDiskSpace.logAnalyticsWorkspaceId]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": 5,
+                    "timeWindowInMinutes": 5
+                },
+                "action": {
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                    "severity": "[parameters('alerts').logAlertLowDiskSpace.severity]",
+                    "throttlingInMin": 0,
+                    "aznsAction": {
+                        "actionGroup": [
+                            "[parameters('alerts').logAlertLowDiskSpace.actionGroupId]"
+                        ],
+                        "emailSubject": null,
+                        "customWebhookPayload": null
+                    },
+                    "trigger": {
+                        "thresholdOperator": "LessThan",
+                        "threshold": "[parameters('alerts').logAlertLowDiskSpace.threshold]",
+                        "metricTrigger": {
+                            "thresholdOperator": "GreaterThan",
+                            "threshold": 0,
+                            "metricTriggerType": "Total",
+                            "metricColumn": "_ResourceId,VolumeName"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "A critical service has stopped",
+            "type": "Microsoft.Insights/scheduledQueryRules",
+            "apiVersion": "[variables( 'apiVersions' ).scheduledQueryRules]",
+            "tags": "[parameters('tags')]",
+            "location": "[toLower(replace(parameters('alerts').logAlertServiceStopped.logAnalyticsRegion, ' ', ''))]",
+            "properties": {
+                "description": "A critiecal service has stopped",
+                "enabled": "true",
+                "source": {
+                    "authorizedResources": [
+                    ],
+                    "query": "ConfigurationChange | where ConfigChangeType =~ 'WindowsServices' and SvcChangeType =~ 'State' and SvcState =~ 'Stopped' | where SvcDisplayName in ('Computer Browser', 'DHCP Client', 'Server', 'Windows Event Log', 'Windows Firewall',  'Remote Procedure Call (RPC)', 'Workstation' ) | extend AggregatedValue = 1 | summarize arg_max(TimeGenerated, *) by _ResourceId, SvcDisplayName, bin(TimeGenerated, 5m)",
+                    "dataSourceId": "[parameters('alerts').logAlertServiceStopped.logAnalyticsWorkspaceId]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": 5,
+                    "timeWindowInMinutes": 5
+                },
+                "action": {
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                    "severity": "[parameters('alerts').logAlertServiceStopped.severity]",
+                    "throttlingInMin": 0,
+                    "aznsAction": {
+                        "actionGroup": [
+                            "[parameters('alerts').logAlertServiceStopped.actionGroupId]"
+                        ],
+                        "emailSubject": null,
+                        "customWebhookPayload": null
+                    },
+                    "trigger": {
+                        "thresholdOperator": "GreaterThan",
+                        "threshold": 0,
+                        "metricTrigger": {
+                            "thresholdOperator": "GreaterThan",
+                            "threshold": 0,
+                            "metricTriggerType": "Total",
+                            "metricColumn": "_ResourceId,SvcDisplayName"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

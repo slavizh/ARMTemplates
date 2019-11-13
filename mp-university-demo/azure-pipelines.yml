@@ -1,0 +1,36 @@
+# Starter pipeline
+
+trigger:
+- master
+
+pool:
+  name: Hosted Windows 2019 with VS2019
+  demands: azureps
+
+steps:
+- task: AzureFileCopy@3
+  displayName: 'Stage files'
+  inputs:
+    SourcePath: 'mp-university-demo/templates'
+    azureSubscription: ''
+    Destination: 'AzureBlob'
+    storage: 'chtrk'
+    ContainerName: 'tempplates'
+    outputStorageUri: 'artifactsLocation'
+    outputStorageContainerSasToken: 'artifactsLocationSasToken'
+    sasTokenTimeOutInMinutes: '240'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Subscription'
+    ConnectedServiceName: ''
+    subscriptionName: ''
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'mp-university-demo/templates/azuredeploy.json'
+    csmParametersFile: 'mp-university-demo/templates/parameters.json'
+    overrideParameters: '-_artifactsLocation $(artifactsLocation) -_artifactsLocationSasToken "$(artifactsLocationSasToken)"'
+    deploymentMode: 'Incremental'
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml

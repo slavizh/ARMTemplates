@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "value": "mpuniversity"
+        },
+        "resourceGroupLocation": {
+            "value": "West Europe"
+        },
+        "alerts": {
+            "value": {
+                "resourceGroupCreate": {
+                    "actionGroupId": ""
+                },
+                "securityAlert": {
+                    "actionGroupId": ""
+                },
+                "serviceHealthAlert": {
+                    "actionGroupId": ""
+                },
+                "advisorAlert": {
+                    "actionGroupId": ""
+                },
+                "policyAlert": {
+                    "actionGroupId": ""
+                },
+                "autoscaleAlert": {
+                    "actionGroupId": "",
+                    "resourceGroupId": ""
+                },
+                "resourceHealthAlert": {
+                    "actionGroupId": "",
+                    "resourceGroupId": ""
+                },
+                "staticMetricAlert": {
+                    "actionGroupId": "",
+                    "webAppResourceId": "/providers/Microsoft.Web/sites/stanf"
+                },
+                "dynamicMetricAlert": {
+                    "actionGroupId": "",
+                    "webAppResourceId": "/providers/Microsoft.Web/sites/stanf",
+                    "region": "West Europe"
+                },
+                "logAlertLowDiskSpace": {
+                    "actionGroupId": "",
+                    "logAnalyticsWorkspaceId": "",
+                    "logAnalyticsRegion": "East US",
+                    "severity": "1",
+                    "threshold": 15
+                },
+                "logAlertServiceStopped": {
+                    "actionGroupId": "",
+                    "logAnalyticsWorkspaceId": "",
+                    "logAnalyticsRegion": "East US",
+                    "severity": "1",
+                    "threshold": 10
+                }
+            }
+        },
+        "tags": {
+            "value": {
+                "demo": "mpuniversity"
+            }
+        }
+    }
+}

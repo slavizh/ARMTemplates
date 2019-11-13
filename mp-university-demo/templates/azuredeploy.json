@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the resource group"
+            }
+        },
+        "resourceGroupLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the resource group"
+            }
+        },
+        "alerts": {
+            "type": "object",
+            "metadata": {
+                "description": "the alerts configuration"
+            }
+        },
+        "tags": {
+            "type": "object"
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources, such as templates and DSC modules, that the template depends on."
+            },
+            "defaultValue": ""
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Auto-generated token to access _artifactsLocation."
+            },
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "deployments": "2019-08-01",
+            "resourceGroups": "2019-05-01"
+        },
+        "templateUris": {
+            "alerts": "[concat( parameters( '_artifactsLocation' ), 'alerts.json', parameters( '_artifactsLocationSasToken' ) )]"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "[variables('apiVersions').resourceGroups]",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {}
+        },
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+            ],
+            "name": "[concat('alerts')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables( 'apiVersions' ).deployments]",
+            "resourceGroup": "[parameters('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('templateUris').alerts]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "alerts": {
+                        "value": "[parameters('alerts')]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
