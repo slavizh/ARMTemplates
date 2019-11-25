@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the action group."
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "The short name of the action group"
+            }
+        },
+        "email": {
+            "type": "string",
+            "metadata": {
+                "description": "email to receive alerts."
+            }
+        },
+        "logicAppSubscriptionId": {
+            "type": "string",
+            "defaultValue": "[subscription().subscriptionId]",
+            "metadata": {
+                "description": "The subscription id of the logic app."
+            }
+        },
+        "logicAppResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group name of the logic app."
+            }
+        },
+        "logicAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the logic app."
+            }
+        },
+        "actionRuleName1": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the first action rule."
+            }
+        },
+        "actionRuleName2": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the second action rule."
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "actionGroups": "2019-06-01",
+            "workflows": "2017-07-01",
+            "actionRules": "2019-05-05-preview"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('actionGroupName')]",
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "[variables( 'apiVersions' ).actionGroups]",
+            "location": "Global",
+            "tags": {},
+            "properties": {
+                "groupShortName": "[parameters('actionGroupShortName')]",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "email1",
+                        "emailAddress": "[parameters('email')]",
+                        "useCommonAlertSchema": true
+                    }
+                ],
+                "webhookReceivers": [],
+                "smsReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [
+                    {
+                        "name": "logicApp1",
+                        "resourceId": "[resourceId(parameters('logicAppSubscriptionId'), parameters('logicAppResourceGroupName'), 'Microsoft.Logic/workflows', parameters('logicAppName'))]",
+                        "callbackUrl": "[listCallbackUrl(resourceId(parameters('logicAppSubscriptionId'), parameters('logicAppResourceGroupName'), 'Microsoft.Logic/workflows/triggers', parameters('logicAppName'), 'manual'), variables('apiVersions').workflows ).value]",
+                        "useCommonAlertSchema": true
+                    }
+                ],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            }
+        },
+        {
+            "name": "[parameters('actionRuleName1')]",
+            "type": "Microsoft.AlertsManagement/actionRules",
+            "apiVersion": "[variables('apiVersions').actionRules]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+            ],
+            "properties": {
+                "status": "Enabled",
+                "type": "ActionGroup",
+                "description": "Catches all alerts and fires action group",
+                //"scope": {
+                //    "scopeType": "ResourceGroup", // Value could be also Resource
+                //    "values": [
+                //        "/subscriptions/607f23dd-f51d-493f-97eb-d4e77607df39/resourceGroups/ASR"
+                //    ]
+                //},
+                "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+            }
+        },
+        {
+            "name": "[parameters('actionRuleName2')]",
+            "type": "Microsoft.AlertsManagement/actionRules",
+            "apiVersion": "[variables('apiVersions').actionRules]",
+            "location": "global",
+            "properties": {
+                "status": "Enabled",
+                "type": "Suppression",
+                "description": "Exception for DB001",
+                "conditions": {
+                    "monitorService": {
+                        "operator": "Equals",
+                        "values": [
+                            "Log Analytics"
+                        ]
+                    },
+                    "alertContext": {
+                        "operator": "Contains",
+                        "values": [
+                            "DB001"
+                        ]
+                    }
+                },
+                "suppressionConfig": {
+                    "recurrenceType": "Weekly",
+                    "schedule": {
+                        "startDate": "11/25/2019",
+                        "endDate": "08/26/2020",
+                        "startTime": "05:00:00", // In UTC
+                        "endTime": "14:00:00", // In UTC
+                        "recurrenceValues": [
+                            0,
+                            6
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
