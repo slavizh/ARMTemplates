@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the log analytics workspace"
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "workspaces": "2017-03-15-preview"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('logAnalyticsWorkspaceName')]",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "[variables('apiVersions').workspaces]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "CapacityReservation",
+                    "capacityReservationLevel": 100
+                },
+                "retentionInDays": 90,
+                "features": {
+                    "legacy": 0,
+                    "searchVersion": 1,
+                    "enableLogAccessUsingOnlyResourcePermissions": true
+                }
+            }
+        }
+    ]
+}
