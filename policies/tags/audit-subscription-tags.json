@@ -1,0 +1,94 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tagName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the tag to audit"
+            }
+        },
+        "enforcementMode": {
+            "type": "string",
+            "defaultValue": "DoNotEnforce",
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "metadata": {
+                "description": "The policy assignment enforcement mode. Possible values are Default and DoNotEnforce."
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "policyDefinitions": "2019-09-01",
+            "policyAssignments": "2019-09-01"
+        }
+    },
+    "resources": [
+        {
+            "name": "[guid('tag-on-subscription')]",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "apiVersion": "[variables('apiVersions').policyDefinitions]",
+            "properties": {
+                "displayName": "Require a tag on subscription",
+                "policyType": "Custom",
+                "mode": "All",
+                "description": "Enforces existence of a tag on subscription.",
+                "metadata": {
+                    "category": "Tags",
+                    "version": "1.0.0"
+                },
+                "parameters": {
+                    "tagName": {
+                        "type": "string",
+                        "metadata": {
+                            "description": "Name of the tag, such as 'environment'",
+                            "displayName": "Tag Name"
+                        }
+                    }
+                },
+                "policyRule": {
+                    "if": {
+                        "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.Resources/subscriptions"
+                            },
+                            {
+                                "field": "[[concat('tags[', parameters('tagName'), ']')]",
+                                "exists": "false"
+                            }
+                        ]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        },
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Authorization/policyDefinitions', guid('tag-on-subscription'))]"
+            ],
+            "name": "[guid('tag-on-subscription')]",
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "[variables('apiVersions').policyAssignments]",
+            "location": "[deployment().location]",
+            "properties": {
+                "displayName": "Require a tag on subscription",
+                "description": "Enforces existence of a tag on subscription.",
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', guid('tag-on-subscription'))]",
+                "enforcementMode": "[parameters('enforcementMode')]",
+                "parameters": {
+                    "tagName": {
+                        "value": "[parameters('tagName')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
