@@ -1,0 +1,22 @@
+{
+  "schemaId": "AIP Budget Notification",
+  "data": {
+    "SubscriptionName": "Visual Studio Ultimate with MSDN",
+    "SubscriptionId": "3c1d68a5-4064-4522-94e4-e0378165922e",
+    "EnrollmentNumber": "",
+    "DepartmentName": "",
+    "AccountName": "",
+    "BillingAccountId": "",
+    "BillingProfileId": "",
+    "InvoiceSectionId": "",
+    "ResourceGroup": "",
+    "SpendingAmount": "2.57",
+    "BudgetStartDate": "2020-11-01",
+    "Budget": "1",
+    "Unit": "EUR",
+    "BudgetCreator": "stas@outlook.com",
+    "BudgetName": "testbudget",
+    "BudgetType": "Cost",
+    "NotificationThresholdAmount": "0.01"
+  }
+}
