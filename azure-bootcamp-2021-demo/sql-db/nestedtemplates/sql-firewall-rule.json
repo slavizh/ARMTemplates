@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlFirewallRule": {
+            "type": "object",
+            "metadata": {
+                "description": "Firewall rule"
+            }
+        },
+        "sqlServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the SQL Logical server."
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "firewallRules": "2020-11-01-preview"
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlFirewallRule').name)]",
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "[variables('apiVersions').firewallRules]",
+            "properties": {
+                "startIpAddress": "[parameters('sqlFirewallRule').startIpAddress]",
+                "endIpAddress": "[parameters('sqlFirewallRule').endIpAddress]"
+            }
+        }
+    ]
+}

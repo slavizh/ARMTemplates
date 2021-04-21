@@ -1,0 +1,105 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlLogicalServers": {
+            "type": "array",
+            "metadata": {
+                "description": "SQL logical servers."
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "deployments": "2020-10-01"
+        },
+        "defaultSqlLogicalServerProperties": {
+            "name": "",
+            "tags": {},
+            "userName": "",
+            "passwordFromKeyVault": {
+                "subscriptionId": "[subscription().subscriptionId]",
+                "resourceGroupName": "",
+                "name": "",
+                "secretName": ""
+            },
+            "systemManagedIdentity": false,
+            "minimalTlsVersion": "1.2",
+            "publicNetworkAccess": "Enabled",
+            "azureActiveDirectoryAdministrator": {
+                "name": "",
+                "objectId": "",
+                "tenantId": "[subscription().tenantId]"
+            },
+            "firewallRules": [],
+            "azureDefender": {
+                "enabled": false,
+                "emailAccountAdmins": false,
+                "emailAddresses": [],
+                "disabledRules": [],
+                "vulnerabilityAssessments": {
+                    "recurringScans": false,
+                    "storageAccount": {
+                        "resourceGroupName": "",
+                        "name": "",
+                        "containerName": ""
+                    },
+                    "emailSubscriptionAdmins": false,
+                    "emails": []
+                }
+            },
+            "auditActionsAndGroups": [],
+            "diagnosticLogsAndMetrics": {
+                "name": "",
+                "resourceGroupName": "",
+                "subscriptionId": "[subscription().subscriptionId]",
+                "logs": [],
+                "metrics": [],
+                "auditLogs": false,
+                "microsoftSupportOperationsAuditLogs": false
+            },
+            "databases": []
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat('sqlLogicalServer-', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersions').deployments]",
+            "copy": {
+                "name": "sqlLogicalServersCopy",
+                "count": "[length(parameters('sqlLogicalServers'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "sql-logical-server.json"
+                },
+                "parameters": {
+                    "sqlLogicalServer": {
+                        "value": "[union(variables('defaultSqlLogicalServerProperties'), parameters('sqlLogicalServers')[copyIndex()])]"
+                    },
+                    "password": {
+                        "reference": {
+                            "keyVault": {
+                                "id": "[resourceId(
+                                        union(variables('defaultSqlLogicalServerProperties'), parameters('sqlLogicalServers')[copyIndex()]).passwordFromKeyVault.subscriptionId,
+                                        parameters('sqlLogicalServers')[copyIndex()].passwordFromKeyVault.resourceGroupName,
+                                        'Microsoft.KeyVault/vaults',
+                                        parameters('sqlLogicalServers')[copyIndex()].passwordFromKeyVault.name
+                                    )]"
+                            },
+                            "secretName": "[parameters('sqlLogicalServers')[copyIndex()].passwordFromKeyVault.secretName]"
+                        }
+                    },
+                    "tags": {
+                        "value": "[union(parameters('tags'), union(variables('defaultSqlLogicalServerProperties'), parameters('sqlLogicalServers')[copyIndex()]).tags)]"
+                    }
+                }
+            }
+        }
+    ]
+}

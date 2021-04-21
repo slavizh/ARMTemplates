@@ -1,0 +1,275 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the SQL server."
+            }
+        },
+        "sqlDatabase": {
+            "type": "object",
+            "metadata": {
+                "description": "The SQL database parameters object."
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "databases": "2020-02-02-preview",
+            "diagnosticSettings": "2017-05-01-preview",
+            "storageAccounts": "2019-06-01",
+            "securityAlertPolicies": "2020-11-01-preview",
+            "vulnerabilityAssessments": "2020-11-01-preview",
+            "auditingSettings": "2020-11-01-preview",
+            "backupShortTermRetentionPolicies": "2020-11-01-preview",
+            "backupLongTermRetentionPolicies": "2020-11-01-preview",
+            "transparentDataEncryption": "2017-03-01-preview"
+        }//,
+        //"defaultAuditActionsAndGroups": [
+        //    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+        //    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+        //    "BATCH_COMPLETED_GROUP"
+        //]
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name)]",
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "[variables('apiVersions').databases]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "sku": {
+                "name": "[parameters('sqlDatabase').skuName]",
+                "tier": "[parameters('sqlDatabase').tier]"
+            },
+            "properties": {
+                "zoneRedundant": "[parameters('sqlDatabase').zoneRedundant]",
+                "collation": "[parameters('sqlDatabase').collation]",
+                "maxSizeBytes": "[if(equals( parameters('sqlDatabase').dataMaxSize, 0),
+                        null(),
+                        mul(mul(mul(parameters('sqlDatabase').dataMaxSize, 1024), 1024), 1024)
+                    )]",
+                "licenseType": "[if(parameters('sqlDatabase').hybridBenefit,
+                        'BasePrice',
+                        'LicenseIncluded'
+                    )]",
+                "readScale": "[if(equals(parameters('sqlDatabase').readReplicas, 0),
+                        'Disabled',
+                        'Enabled'
+                    )]",
+                "readReplicaCount": "[parameters('sqlDatabase').readReplicas]",
+                "minCapacity": "[if(equals(parameters('sqlDatabase').minimumCores, 0),
+                        '',
+                        string(parameters('sqlDatabase').minimumCores)
+                    )]",
+                "autoPauseDelay": "[if(equals(parameters('sqlDatabase').autoPauseDelay, 0),
+                        '',
+                        string(parameters('sqlDatabase').autoPauseDelay)
+                    )]"
+            }
+        },
+        // Transparent Data Encryption
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]"
+            ],
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/current')]",
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "[variables('apiVersions').transparentDataEncryption]",
+            "properties": {
+                "status": "[parameters('sqlDatabase').dataEncryption]"
+            }
+        },
+        // Short term backup
+        {
+            "condition": "[not(equals(parameters('sqlDatabase').shortTermBackupRetention, 0))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+                "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]"
+            ],
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "[variables('apiVersions').backupShortTermRetentionPolicies]",
+            "properties": {
+                "retentionDays": "[parameters('sqlDatabase').shortTermBackupRetention]"
+            }
+        },
+        // Long term backup
+        {
+            "condition": "[parameters('sqlDatabase').longTermBackup.enabled]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+                "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]",
+                "[resourceId('Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies', parameters('sqlServerName'), parameters('sqlDatabase').name, 'Default')]"
+            ],
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "[variables('apiVersions').backupLongTermRetentionPolicies]",
+            "properties": {
+                "weeklyRetention": "[parameters('sqlDatabase').longTermBackup.weeklyRetention]",
+                "monthlyRetention": "[parameters('sqlDatabase').longTermBackup.monthlyRetention]",
+                "yearlyRetention": "[parameters('sqlDatabase').longTermBackup.yearlyRetention]",
+                "weekOfYear": "[parameters('sqlDatabase').longTermBackup.weekOfYear]"
+            }
+        },
+        // Azure Defender
+        {
+            "condition": "[parameters('sqlDatabase').azureDefender.enabled]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+                "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]"
+            ],
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "[variables('apiVersions').securityAlertPolicies]",
+            "properties": {
+                "state": "[if(parameters('sqlDatabase').azureDefender.enabled, 'Enabled', 'Disabled')]",
+                "emailAddresses": "[parameters('sqlDatabase').azureDefender.emailAddresses]",
+                "emailAccountAdmins": "[parameters('sqlDatabase').azureDefender.emailAccountAdmins]",
+                "disabledAlerts": "[parameters('sqlDatabase').azureDefender.disabledRules]"
+            }
+        },
+        // Vulnerability Assessments
+        // Can be enabled only if Azure Defender is enabled as well
+        {
+            "condition": "[and(
+                    parameters('sqlDatabase').azureDefender.enabled,
+                    parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.recurringScans,
+                    not(empty(parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.name))
+                )]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+                "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]",
+                "[resourceId('Microsoft.Sql/servers/databases/securityAlertPolicies', parameters('sqlServerName'), parameters('sqlDatabase').name, 'Default')]"
+            ],
+            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "[variables( 'apiVersions' ).vulnerabilityAssessments]",
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": "[parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.recurringScans]",
+                    "emailSubscriptionAdmins": "[parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.emailSubscriptionAdmins]",
+                    "emails": "[parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.emails]"
+                },
+                "storageContainerPath": "[if(not(empty(parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.name)),
+                        concat(
+                            reference(
+                                resourceId(
+                                    parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.resourceGroupName,
+                                    'Microsoft.Storage/storageAccounts',
+                                    parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.name
+                                ),
+                                variables('apiVersions').storageAccounts
+                            ).primaryEndpoints.blob,
+                            parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.containerName
+                        ),
+                        ''
+                    )]",
+                "storageAccountAccessKey": "[if(not(empty(parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.name)),
+                        listKeys(
+                            resourceId(
+                                parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.resourceGroupName,
+                                'Microsoft.Storage/storageAccounts',
+                                parameters('sqlDatabase').azureDefender.vulnerabilityAssessments.storageAccount.name
+                            ),
+                            variables('apiVersions').storageAccounts
+                        ).keys[0].value,
+                        ''
+                    )]"
+            }
+        }//,
+        // Audit settings need for enabling auditing to Log Analytics workspace
+        //{
+        //    "dependsOn": [
+        //        "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+        //        "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName' ), parameters('sqlDatabase').name, 'current')]"
+        //    ],
+        //    "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Default')]",
+        //    "type": "Microsoft.Sql/servers/databases/auditingSettings",
+        //    "apiVersion": "[variables('apiVersions').auditingSettings]",
+        //    "properties": {
+        //        "state": "[if(parameters('sqlDatabase').diagnosticLogsAndMetrics.auditLogs,
+        //                'Enabled',
+        //                'Disabled'
+        //            )]",
+        //      "auditActionsAndGroups": "[if(not(empty(parameters('sqlDatabase').auditActionsAndGroups)),
+        //                parameters('sqlDatabase').auditActionsAndGroups,
+        //                variables('defaultAuditActionsAndGroups')
+        //            )]",
+        //        "storageEndpoint": "",
+        //        "storageAccountAccessKey": "",
+        //        "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
+        //        "retentionDays": 0,
+        //        "isAzureMonitorTargetEnabled": "[parameters('sqlDatabase').diagnosticLogsAndMetrics.auditLogs]"
+        //    }
+        //},
+        // Sends audit logs to Log Analytics Workspace
+        //{
+        //    "condition": "[parameters('sqlDatabase').diagnosticLogsAndMetrics.auditLogs]",
+        //    "dependsOn": [
+        //        "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+        //        "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]",
+        //        "[resourceId('Microsoft.Sql/servers/databases/auditingSettings', parameters('sqlServerName'), parameters('sqlDatabase').name, 'Default')]"
+        //    ],
+        //    "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabase').name, '/Microsoft.Insights/SQLSecurityAuditEvents_3d229c42-c7e7-4c97-9a99-ec0d0d8b86c1')]",
+        //    "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+        //    "apiVersion": "[variables('apiVersions').diagnosticSettings]",
+        //    "properties": {
+        //        "workspaceId": "[resourceId(
+        //                    parameters('sqlDatabase').diagnosticLogsAndMetrics.subscriptionId,
+        //                    parameters('sqlDatabase').diagnosticLogsAndMetrics.resourceGroupName,
+        //                    'Microsoft.OperationalInsights/workspaces',
+        //                    parameters('sqlDatabase').diagnosticLogsAndMetrics.name
+        //            )]",
+        //        "logs": [
+        //            {
+        //                "category": "SQLSecurityAuditEvents",
+        //                "enabled": true
+        //            }
+        //        ]
+        //    }
+        //},
+        // Send other logs and metrics to Log Analytics
+        //{
+        //    "condition": "[not(empty(parameters('sqlDatabase').diagnosticLogsAndMetrics.name))]",
+        //    "dependsOn": [
+        //        "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServerName'), parameters('sqlDatabase').name)]",
+        //        "[resourceId('Microsoft.Sql/servers/databases/transparentDataEncryption', parameters('sqlServerName'), parameters('sqlDatabase').name, 'current')]"
+        //    ],
+        //    "name": "[concat(parameters('sqlServerName') , '/', parameters('sqlDatabase').name, '/Microsoft.Insights/sendLogsAndMetrics')]",
+        //    "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+        //    "apiVersion": "[variables('apiVersions').diagnosticSettings]",
+        //    "properties": {
+        //        "workspaceId": "[resourceId(
+        //                parameters('sqlDatabase').diagnosticLogsAndMetrics.subscriptionId,
+        //                parameters('sqlDatabase').diagnosticLogsAndMetrics.resourceGroupName,
+        //                'Microsoft.OperationalInsights/workspaces',
+        //                parameters('sqlDatabase').diagnosticLogsAndMetrics.name
+        //            )]",
+        //        "copy": [
+        //            {
+        //                "name": "metrics",
+        //                "count": "[length(parameters('sqlDatabase').diagnosticLogsAndMetrics.metrics)]",
+        //                "input": {
+        //                    "category": "[parameters('sqlDatabase').diagnosticLogsAndMetrics.metrics[copyIndex('metrics')]]",
+        //                    "enabled": true
+        //                }
+        //            },
+        //            {
+        //                "name": "logs",
+        //                "count": "[length(parameters('sqlDatabase').diagnosticLogsAndMetrics.logs)]",
+        //                "input": {
+        //                    "category": "[parameters('sqlDatabase').diagnosticLogsAndMetrics.logs[copyIndex('logs')]]",
+        //                    "enabled": true
+        //                }
+        //            }
+        //        ]
+        //    }
+        //}
+    ]
+}

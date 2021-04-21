@@ -1,0 +1,367 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlLogicalServer": {
+            "type": "object",
+            "metadata": {
+                "description": "SQL Logical server."
+            }
+        },
+        "password": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The SQL Logical Server password."
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "servers": "2020-02-02-preview",
+            "administrators": "2020-11-01-preview",
+            "storageAccounts": "2019-06-01",
+            "securityAlertPolicies": "2020-11-01-preview",
+            "vulnerabilityAssessments": "2020-11-01-preview",
+            "auditingSettings": "2020-11-01-preview",
+            "diagnosticSettings": "2017-05-01-preview",
+            "deployments": "2020-10-01"
+        },
+        "defaultAuditActionsAndGroups": [
+            "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+            "FAILED_DATABASE_AUTHENTICATION_GROUP",
+            "BATCH_COMPLETED_GROUP"
+        ],
+        "defaultSqlDatabaseProperties": {
+            "name": "",
+            "status": "",
+            "tags": {},
+            "skuName": "",
+            "tier": "",
+            "zoneRedundant": false,
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "dataMaxSize": 0,
+            "hybridBenefit": false,
+            "readReplicas": 0,
+            "minimumCores": 0,
+            "autoPauseDelay": 0,
+            "dataEncryption": "Enabled",
+            "shortTermBackupRetention": 0,
+            "longTermBackup": {
+                "enabled": false,
+                "weeklyRetention": "P1W",
+                "monthlyRetention": "P4W",
+                "yearlyRetention": "P52W",
+                "weekOfYear": 1
+            },
+            "azureDefender": {
+                "enabled": false,
+                "emailAccountAdmins": false,
+                "emailAddresses": [],
+                "disabledRules": [],
+                "vulnerabilityAssessments": {
+                    "recurringScans": false,
+                    "storageAccount": {
+                        "resourceGroupName": "",
+                        "name": "",
+                        "containerName": ""
+                    },
+                    "emailSubscriptionAdmins": false,
+                    "emails": []
+                }
+            },
+            "auditActionsAndGroups": [],
+            "diagnosticLogsAndMetrics": {
+                "name": "",
+                "resourceGroupName": "",
+                "subscriptionId": "[subscription().subscriptionId]",
+                "logs": [],
+                "metrics": [],
+                "auditLogs": false
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('sqlLogicalServer').name]",
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "[variables('apiVersions').servers]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "kind": "v12.0",
+            "identity": {
+                "type": "[if(parameters('sqlLogicalServer').systemManagedIdentity,
+                        'SystemAssigned',
+                        'None'
+                    )]"
+            },
+            "properties": {
+                "administratorLogin": "[parameters('sqlLogicalServer').userName]",
+                "administratorLoginPassword": "[parameters('password')]",
+                "version": "12.0",
+                "minimalTlsVersion": "[parameters('sqlLogicalServer').minimalTlsVersion]",
+                "publicNetworkAccess": "[parameters('sqlLogicalServer').publicNetworkAccess]"
+            }
+        },
+        // Azure Active Directory integration
+        {
+            "condition": "[not(empty(parameters('sqlLogicalServer').azureActiveDirectoryAdministrator.objectId))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]"
+            ],
+            "name": "[concat(parameters('sqlLogicalServer').name, '/activeDirectory')]",
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "[variables('apiVersions').administrators]",
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "[parameters('sqlLogicalServer').azureActiveDirectoryAdministrator.name]",
+                "sid": "[parameters('sqlLogicalServer').azureActiveDirectoryAdministrator.objectId]",
+                "tenantId": "[parameters('sqlLogicalServer').azureActiveDirectoryAdministrator.tenantId]"
+            }
+        },
+        // Azure Defender
+        {
+
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]"
+            ],
+            "name": "[concat(parameters('sqlLogicalServer').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "[variables('apiVersions').securityAlertPolicies]",
+            "properties": {
+                "state": "[if(parameters('sqlLogicalServer').azureDefender.enabled, 'Enabled', 'Disabled')]",
+                "emailAddresses": "[parameters('sqlLogicalServer').azureDefender.emailAddresses]",
+                "emailAccountAdmins": "[parameters('sqlLogicalServer').azureDefender.emailAccountAdmins]",
+                "disabledAlerts": "[parameters('sqlLogicalServer').azureDefender.disabledRules]"
+            }
+        },
+        // Vulnerability Assessments
+        // Can be enabled only if Azure Defender is enabled as well
+        {
+
+            "condition": "[and(
+                    parameters('sqlLogicalServer').azureDefender.enabled,
+                    parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.recurringScans,
+                    not( empty( parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.name ) )
+                )]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]",
+                "[resourceId('Microsoft.Sql/servers/securityAlertPolicies', parameters('sqlLogicalServer').name, 'Default')]"
+            ],
+            "name": "[concat(parameters('sqlLogicalServer').name, '/Default')]",
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "[variables('apiVersions').vulnerabilityAssessments]",
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": "[parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.recurringScans]",
+                    "emailSubscriptionAdmins": "[parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.emailSubscriptionAdmins]",
+                    "emails": "[parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.emails]"
+                },
+                "storageContainerPath": "[if(not(empty(parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.name)),
+                        concat(
+                            reference(
+                                resourceId(
+                                    parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.resourceGroupName,
+                                    'Microsoft.Storage/storageAccounts',
+                                    parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.name
+                                ),
+                                variables('apiVersions').storageAccounts
+                            ).primaryEndpoints.blob,
+                            parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.containerName
+                        ),
+                        ''
+                    )]",
+                "storageAccountAccessKey": "[if(not(empty(parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.name)),
+                        listKeys(
+                            resourceId(
+                                parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.resourceGroupName,
+                                'Microsoft.Storage/storageAccounts',
+                                parameters('sqlLogicalServer').azureDefender.vulnerabilityAssessments.storageAccount.name
+                            ),
+                            variables('apiVersions').storageAccounts
+                        ).keys[0].value,
+                        ''
+                    )]"
+            }
+        },
+        // Audit settings need for enabling auditing to Log Analytics workspace
+        {
+            "dependsOn": [
+                "[resourceId( 'Microsoft.Sql/servers', parameters('sqlLogicalServer').name )]"
+            ],
+            "name": "[concat( parameters('sqlLogicalServer').name, '/Default' )]",
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "[variables( 'apiVersions' ).auditingSettings]",
+            "properties": {
+                "state": "[if(parameters('sqlLogicalServer').diagnosticLogsAndMetrics.auditLogs,
+                        'Enabled',
+                        'Disabled'
+                    )]",
+                "auditActionsAndGroups": "[if(not(empty( parameters('sqlLogicalServer').auditActionsAndGroups)),
+                        parameters('sqlLogicalServer').auditActionsAndGroups,
+                        variables('defaultAuditActionsAndGroups')
+                    )]",
+                "storageEndpoint": "",
+                "storageAccountAccessKey": "",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.auditLogs]",
+                "isDevopsAuditEnabled": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.microsoftSupportOperationsAuditLogs]"
+            }
+        },
+        // SQL Logical Server Firewall Rules
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]"
+            ],
+            "name": "[concat('sqlFirewallRule-', uniqueString(parameters('sqlLogicalServer').name), '-', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables( 'apiVersions' ).deployments]",
+            "copy": {
+                "name": "sqlFirewallRulesCopy",
+                "count": "[length(parameters('sqlLogicalServer').firewallRules)]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "sql-firewall-rule.json"
+                },
+                "parameters": {
+                    "sqlFirewallRule": {
+                        "value": "[parameters('sqlLogicalServer').firewallRules[copyIndex()]]"
+                    },
+                    "sqlServerName": {
+                        "value": "[parameters('sqlLogicalServer').name]"
+                    }
+                }
+            }
+        },
+        // SQL Databases
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]"
+            ],
+            "name": "[concat('sqlDb-', uniqueString(parameters('sqlLogicalServer').name), '-', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersions').deployments]",
+            "copy": {
+                "name": "sqlDbsCopy",
+                "count": "[length(parameters('sqlLogicalServer').databases)]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "sql-database.json"
+                },
+                "parameters": {
+                    "sqlServerName": {
+                        "value": "[parameters('sqlLogicalServer').name]"
+                    },
+                    "sqlDatabase": {
+                        "value": "[union(variables('defaultSqlDatabaseProperties'), parameters('sqlLogicalServer').databases[copyIndex()])]"
+                    },
+                    "tags": {
+                        "value": "[union(parameters('tags'), union(variables('defaultSqlDatabaseProperties'), parameters('sqlLogicalServer').databases[copyIndex()]).tags)]"
+                    }
+                }
+            }
+        },
+        // Empty deployment that serves as artificial delay until master database resource is created
+        {
+            "condition": "[or(
+                    parameters('sqlLogicalServer').diagnosticLogsAndMetrics.auditLogs,
+                    not(empty(parameters('sqlLogicalServer').diagnosticLogsAndMetrics.name))
+                )]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]"
+            ],
+            "name": "[concat('dummyTemplateSqlServer-', uniqueString(parameters('sqlLogicalServer').name), '-', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersions').deployments]",
+            "copy": {
+                "name": "dummyTemplateSqlServerCopy",
+                "count": 5,
+                "mode": "serial",
+                "batchSize": 1
+            },
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        // Sends audit logs to Log Analytics Workspace
+        {
+            "condition": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.auditLogs]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/auditingSettings', parameters('sqlLogicalServer').name, 'Default')]",
+                "sqlDbsCopy",
+                "dummyTemplateSqlServerCopy"
+            ],
+            "name": "[concat(parameters('sqlLogicalServer').name, '/master/Microsoft.Insights/SQLSecurityAuditEvents_3d229c42-c7e7-4c97-9a99-ec0d0d8b86c1')]",
+            "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+            "apiVersion": "[variables('apiVersions').diagnosticSettings]",
+            "properties": {
+                "workspaceId": "[resourceId(
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.subscriptionId,
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.resourceGroupName,
+                        'Microsoft.OperationalInsights/workspaces',
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.name
+                    )]",
+                "logs": [
+                    {
+                        "category": "SQLSecurityAuditEvents",
+                        "enabled": true
+                    },
+                    {
+                        "category": "DevOpsOperationsAudit",
+                        "enabled": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.microsoftSupportOperationsAuditLogs]"
+                    }
+                ]
+            }
+        },
+        // Send other logs and metrics to Log Analytics
+        {
+            "condition": "[not(empty(parameters('sqlLogicalServer').diagnosticLogsAndMetrics.name))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlLogicalServer').name)]",
+                "sqlDbsCopy",
+                "dummyTemplateSqlServerCopy"
+            ],
+            "name": "[concat(parameters('sqlLogicalServer').name, '/master/Microsoft.Insights/sendLogsAndMetrics')]",
+            "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+            "apiVersion": "[variables('apiVersions').diagnosticSettings]",
+            "properties": {
+                "workspaceId": "[resourceId(
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.subscriptionId,
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.resourceGroupName,
+                        'Microsoft.OperationalInsights/workspaces',
+                        parameters('sqlLogicalServer').diagnosticLogsAndMetrics.name
+                    )]",
+                "copy": [
+                    {
+                        "name": "metrics",
+                        "count": "[length(parameters('sqlLogicalServer').diagnosticLogsAndMetrics.metrics)]",
+                        "input": {
+                            "category": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.metrics[copyIndex('metrics')]]",
+                            "enabled": true
+                        }
+                    },
+                    {
+                        "name": "logs",
+                        "count": "[length(parameters('sqlLogicalServer').diagnosticLogsAndMetrics.logs)]",
+                        "input": {
+                            "category": "[parameters('sqlLogicalServer').diagnosticLogsAndMetrics.logs[copyIndex('logs')]]",
+                            "enabled": true
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

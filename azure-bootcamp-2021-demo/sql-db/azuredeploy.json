@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroup": {
+            "type": "object",
+            "metadata": {
+                "description": "Resource Group object definition."
+            }
+        }
+    },
+    "variables": {
+        "apiVersions": {
+            "deployments": "2020-10-01",
+            "resourceGroups": "2020-10-01"
+        },
+        "defaultResourceGroupProperties": {
+            "tags": {},
+            "deploy": true
+        }
+    },
+    "resources": [
+        // Deploy Resource Group
+        {
+            "condition": "[union(variables('defaultResourceGroupProperties'), parameters('resourceGroup')).deploy]",
+            "name": "[parameters('resourceGroup').name]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "[variables('apiVersions').resourceGroups]",
+            "location": "[parameters('resourceGroup').location]",
+            "tags": "[union(variables('defaultResourceGroupProperties'), parameters('resourceGroup')).tags]",
+            "properties": {}
+        },
+        // Start SQL Logical Servers deployment
+        {
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroup').name)]"
+            ],
+            "name": "sqlLogicalServers",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersions').deployments]",
+            "resourceGroup": "[parameters('resourceGroup').name]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "nestedtemplates/sql-logical-servers.json"
+                },
+                "parameters": {
+                    "sqlLogicalServers": {
+                        "value": "[parameters('resourceGroup').sqlLogicalServers]"
+                    },
+                    "tags": {
+                        "value": "[union(variables('defaultResourceGroupProperties'), parameters('resourceGroup')).tags]"
+                    }
+                }
+            }
+        }
+    ]
+}
