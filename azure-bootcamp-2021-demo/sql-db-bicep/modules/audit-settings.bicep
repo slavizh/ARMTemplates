@@ -1,4 +1,3 @@
-
 param sqlDatabase object
 param sqlServerName string
 
@@ -9,7 +8,7 @@ var defaultAuditActionsAndGroups = [
 ]
 
 // Audit settings need for enabling auditing to Log Analytics workspace
-resource auditSettings 'Microsoft.Sql/servers/databases/auditingSettings@2020-08-01-preview' = {
+resource auditSettings 'Microsoft.Sql/servers/databases/auditingSettings@2021-02-01-preview' = {
   name: '${sqlServerName}/${sqlDatabase.name}/Default'
   properties: {
     state: sqlDatabase.diagnosticLogsAndMetrics.auditLogs ? 'Enabled' : 'Disabled'
@@ -19,5 +18,5 @@ resource auditSettings 'Microsoft.Sql/servers/databases/auditingSettings@2020-08
     storageAccountSubscriptionId: '00000000-0000-0000-0000-000000000000'
     retentionDays: 0
     isAzureMonitorTargetEnabled: sqlDatabase.diagnosticLogsAndMetrics.auditLogs
-    }
+  }
 }
